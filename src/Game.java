@@ -14,6 +14,101 @@ public class Game {
 	private int tours = 0;
 	private Map<Tile, Tile> orders = new HashMap<Tile, Tile>();
 
+	public int getLignes() {
+		return lignes;
+	}
+
+	public void setLignes(int lignes) {
+		this.lignes = lignes;
+	}
+
+	public int getColonnes() {
+		return colonnes;
+	}
+
+	public void setColonnes(int colonnes) {
+		this.colonnes = colonnes;
+	}
+
+	public int getTours() {
+		return tours;
+	}
+
+	public void setTours(int tours) {
+		this.tours = tours;
+	}
+
+	public Map<Tile, Tile> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(Map<Tile, Tile> orders) {
+		this.orders = orders;
+	}
+
+	public Set<Tile> getNourritures() {
+		return nourritures;
+	}
+
+	public void setNourritures(Set<Tile> nourritures) {
+		this.nourritures = nourritures;
+	}
+
+	public Set<Tile> getFourmillieres() {
+		return fourmillieres;
+	}
+
+	public void setFourmillieres(Set<Tile> fourmillieres) {
+		this.fourmillieres = fourmillieres;
+	}
+
+	public Set<Tile> getMesFourmillieres() {
+		return mesFourmillieres;
+	}
+
+	public void setMesFourmillieres(Set<Tile> mesFourmillieres) {
+		this.mesFourmillieres = mesFourmillieres;
+	}
+
+	public Set<Tile> getEnnemiesFourmillieres() {
+		return ennemiesFourmillieres;
+	}
+
+	public void setEnnemiesFourmillieres(Set<Tile> ennemiesFourmillieres) {
+		this.ennemiesFourmillieres = ennemiesFourmillieres;
+	}
+
+	public Set<Ant> getMesFourmis() {
+		return mesFourmis;
+	}
+
+	public void setMesFourmis(Set<Ant> mesFourmis) {
+		this.mesFourmis = mesFourmis;
+	}
+
+	public Set<Ant> getEnnemiesFourmis() {
+		return ennemiesFourmis;
+	}
+
+	public void setEnnemiesFourmis(Set<Ant> ennemiesFourmis) {
+		this.ennemiesFourmis = ennemiesFourmis;
+	}
+
+	public Set<Tile> getBrouillardTiles() {
+		return brouillardTiles;
+	}
+
+	public void setBrouillardTiles(Set<Tile> brouillardTiles) {
+		this.brouillardTiles = brouillardTiles;
+	}
+
+	public Ants getConnexion() {
+		return connexion;
+	}
+
+	public static void setSingleton(Game singleton) {
+		Game.singleton = singleton;
+	}
 	private Set<Tile> nourritures;
 	private Set<Tile> fourmillieres;
 	private Set<Tile> mesFourmillieres = new HashSet<Tile>();
@@ -57,7 +152,7 @@ public class Game {
 
 	private void fourmis(Set<Ant> ants, Set<Tile> tiles) {
 		for (Tile tile : tiles) {
-			ants.add(new Ant(this, tile));
+			ants.add(new Ant(tile));
 		}
 	}
 
@@ -71,8 +166,15 @@ public class Game {
 			}
 		}
 		
-		actionSet(this.mesFourmis, new RechercherNourritureAction());
-		activerSet(this.mesFourmis);
+		Set<Ant> fourmiSeekBouffe = new HashSet<Ant>();
+		for (Ant fourmi : mesFourmis) {
+			if(!fourmi.isInFormation() && !fourmi.canKillHill()) {
+				fourmiSeekBouffe.add(fourmi);
+			}
+		}
+		
+		actionSet(fourmiSeekBouffe, new RechercherNourritureAction());
+		activerSet(fourmiSeekBouffe);
 	}
 
 	private void activerSet(Set<Ant> setFourmis) {
