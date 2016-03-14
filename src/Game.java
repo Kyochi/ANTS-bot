@@ -1,6 +1,7 @@
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -185,6 +186,29 @@ public class Game {
 	private void actionSet(Set<Ant> setFourmis, Action action) {
 		for (Ant fourmi : setFourmis) {
 			fourmi.setAction(action);
+		}
+	}
+	
+	public boolean doMoveLocation(Tile antLoc, Tile destLoc) {
+		// Track targets to prevent 2 ants to the same location
+		List<Aim> directions = this.connexion.getDirections(antLoc, destLoc);
+		for (Aim direction : directions) {
+			if (doMoveDirection(antLoc, direction)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean doMoveDirection(Tile antLoc, Aim direction) {
+		// Track all moves, prevent collisions
+		Tile newLoc = this.connexion.getTile(antLoc, direction);
+		if (this.connexion.getIlk(newLoc).isUnoccupied() && !orders.containsKey(newLoc)) {
+			this.connexion.issueOrder(antLoc, direction);
+			orders.put(newLoc, antLoc);
+			return true;
+		} else {
+			return false;
 		}
 	}
 }
