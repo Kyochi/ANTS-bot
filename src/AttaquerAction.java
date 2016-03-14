@@ -5,7 +5,7 @@ import java.util.Set;
 
 public class AttaquerAction extends Action {
 
-	public AttaquerAction(Set<Ant> fourmis) {
+	public AttaquerAction(List<Ant> fourmis) {
 		super(fourmis);
 		// TODO Auto-generated constructor stub
 	}

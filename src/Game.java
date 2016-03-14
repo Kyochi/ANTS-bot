@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -208,9 +209,10 @@ public class Game {
 		}
 
 		// Recherche de nourriture
-		Set<Ant> fourmiSeekBouffe = new HashSet<Ant>();
-		Set<Ant> fourmiAttaquer = new HashSet<Ant>();
-		Set<Ant> fourmiExplorer = new HashSet<Ant>();
+		List<Ant> fourmiSeekBouffe = new ArrayList<Ant>();
+		List<Ant> fourmiAttaquer = new ArrayList<Ant>();
+		List<Ant> fourmiExplorer = new ArrayList<Ant>();
+		
 		for (Ant fourmi : mesFourmis) {
 			if (!fourmi.isInFormation() && !fourmi.canKillHill()) {
 				fourmiSeekBouffe.add(fourmi);
@@ -218,7 +220,6 @@ public class Game {
 			if(!orders.containsValue(fourmi.getTile())) {
 				fourmiAttaquer.add(fourmi);
 				fourmiExplorer.add(fourmi);
-				
 			}
 		}
 		RechercherNourritureAction rna = new RechercherNourritureAction(fourmiSeekBouffe);

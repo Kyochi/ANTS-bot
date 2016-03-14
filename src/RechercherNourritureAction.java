@@ -9,7 +9,7 @@ import java.util.TreeSet;
 public class RechercherNourritureAction extends Action {
 
 	Map<Tile, Tile> foodTargets = new HashMap<Tile, Tile>();
-	public RechercherNourritureAction(Set<Ant> fourmis) {
+	public RechercherNourritureAction(List<Ant> fourmis) {
 		super(fourmis);
 	}
 
