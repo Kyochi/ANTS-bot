@@ -104,6 +104,28 @@ public class MyBot extends Bot {
 			}
 		}
 
+		// add new hills to set
+        for (Tile enemyHill : ants.getEnemyHills()) {
+            if (!enemyHills.contains(enemyHill)) {
+                enemyHills.add(enemyHill);
+            }
+        }
+        // attack hills
+        List<Route> hillRoutes = new ArrayList<Route>();
+        for (Tile hillLoc : enemyHills) {
+            for (Tile antLoc : sortedAnts) {
+                if (!orders.containsValue(antLoc)) {
+                    int distance = ants.getDistance(antLoc, hillLoc);
+                    Route route = new Route(antLoc, hillLoc, distance);
+                    hillRoutes.add(route);
+                }
+            }
+        }
+        Collections.sort(hillRoutes);
+        for (Route route : hillRoutes) {
+            doMoveLocation(route.getStart(), route.getEnd());
+        }
+		
 		// explore unseen areas
 		for (Tile antLoc : sortedAnts) {
 			if (!orders.containsValue(antLoc)) {
