@@ -1,11 +1,11 @@
-import java.util.List;
+import java.util.Set;
 
 public abstract class Action {
-	protected List<Ant> fourmis;
+	protected Set<Ant> fourmis;
 	
 	public abstract boolean activer();
 
-	public Action(List<Ant> fourmis) {
+	public Action(Set<Ant> fourmis) {
 		this.fourmis = fourmis;
 	}
 }

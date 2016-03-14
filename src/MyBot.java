@@ -26,32 +26,35 @@ public class MyBot extends Bot {
 		new MyBot().readSystemInput();
 	}
 	private Game game;
-//	private Map<Tile, Tile> orders = new HashMap<Tile, Tile>();
+	private Map<Tile, Tile> orders = new HashMap<Tile, Tile>();
 
-//	private boolean doMoveLocation(Tile antLoc, Tile destLoc) {
-//		Ants ants = getAnts();
-//		// Track targets to prevent 2 ants to the same location
-//		List<Aim> directions = ants.getDirections(antLoc, destLoc);
-//		for (Aim direction : directions) {
-//			if (doMoveDirection(antLoc, direction)) {
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
-//
-//	private boolean doMoveDirection(Tile antLoc, Aim direction) {
-//		Ants ants = getAnts();
-//		// Track all moves, prevent collisions
-//		Tile newLoc = ants.getTile(antLoc, direction);
-//		if (ants.getIlk(newLoc).isUnoccupied() && !orders.containsKey(newLoc)) {
-//			ants.issueOrder(antLoc, direction);
-//			orders.put(newLoc, antLoc);
-//			return true;
-//		} else {
-//			return false;
-//		}
-//	}
+	private Set<Tile> unseenTiles;
+	private Set<Tile> enemyHills = new HashSet<Tile>();
+
+	private boolean doMoveLocation(Tile antLoc, Tile destLoc) {
+		Ants ants = getAnts();
+		// Track targets to prevent 2 ants to the same location
+		List<Aim> directions = ants.getDirections(antLoc, destLoc);
+		for (Aim direction : directions) {
+			if (doMoveDirection(antLoc, direction)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean doMoveDirection(Tile antLoc, Aim direction) {
+		Ants ants = getAnts();
+		// Track all moves, prevent collisions
+		Tile newLoc = ants.getTile(antLoc, direction);
+		if (ants.getIlk(newLoc).isUnoccupied() && !orders.containsKey(newLoc)) {
+			ants.issueOrder(antLoc, direction);
+			orders.put(newLoc, antLoc);
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	@Override
 	public void doTurn() {
