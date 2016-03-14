@@ -174,21 +174,10 @@ public class Game {
 			}
 		}
 		
-		actionSet(fourmiSeekBouffe, new RechercherNourritureAction());
-		activerSet(fourmiSeekBouffe);
+		RechercherNourritureAction rna = new RechercherNourritureAction(fourmiSeekBouffe);
+		rna.activer();
 	}
 
-	private void activerSet(Set<Ant> setFourmis) {
-		for (Ant fourmi : setFourmis) {
-			fourmi.activer();
-		}
-	}
-	private void actionSet(Set<Ant> setFourmis, Action action) {
-		for (Ant fourmi : setFourmis) {
-			fourmi.setAction(action);
-		}
-	}
-	
 	public boolean doMoveLocation(Tile antLoc, Tile destLoc) {
 		// Track targets to prevent 2 ants to the same location
 		List<Aim> directions = this.connexion.getDirections(antLoc, destLoc);
