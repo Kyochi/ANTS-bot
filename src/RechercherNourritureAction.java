@@ -2,8 +2,8 @@
 public class RechercherNourritureAction implements Action {
 
 	@Override
-	public void activer() {
-		
+	public boolean activer() {
+		return false;
 	}
 
 }

@@ -12,8 +12,8 @@ public class Ant {
 		this.action = action;
 	}
 
-	public void activer() {
-		this.action.activer();		
+	public boolean activer() {
+		return this.action.activer();		
 	}
 
 }

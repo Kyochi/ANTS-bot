@@ -18,7 +18,7 @@ public class Play {
 	private Set<Tile> ennemiesFourmillieres = new HashSet<Tile>();
 
 	private Set<Ant> mesFourmis = new HashSet<Ant>();
-	private Set<Ant> ennemiesFourmis= new HashSet<Ant>();
+	private Set<Ant> ennemiesFourmis = new HashSet<Ant>();
 
 	public Play(Ants ants, Map<Tile, Tile> orders) {
 		this.connexion = ants;
@@ -40,16 +40,27 @@ public class Play {
 		fourmis(mesFourmis, this.connexion.getMyAnts());
 		fourmis(ennemiesFourmis, this.connexion.getEnemyAnts());
 	}
-	
+
 	private void fourmis(Set<Ant> ants, Set<Tile> tiles) {
 		for (Tile tile : tiles) {
 			ants.add(new Ant(this, tile));
 		}
 	}
-	
+
 	public void play() {
-		for (Ant fourmi : mesFourmis) {
+		orders.clear();
+		actionSet(this.mesFourmis, new RechercherNourritureAction());
+		activerSet(this.mesFourmis);
+	}
+
+	private void activerSet(Set<Ant> setFourmis) {
+		for (Ant fourmi : setFourmis) {
 			fourmi.activer();
+		}
+	}
+	private void actionSet(Set<Ant> setFourmis, Action action) {
+		for (Ant fourmi : setFourmis) {
+			fourmi.setAction(action);
 		}
 	}
 }

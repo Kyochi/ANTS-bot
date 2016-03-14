@@ -1,4 +1,4 @@
 
 public interface Action {
- public void activer();
+ public boolean activer();
 }
