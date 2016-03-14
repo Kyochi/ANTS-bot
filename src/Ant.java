@@ -4,7 +4,7 @@ public class Ant {
 	private Tile tile;
 	private Action action;
 	
-	public Ant(Play play, Tile tile) {
+	public Ant(Game play, Tile tile) {
 		this.tile = tile;
 	}
 

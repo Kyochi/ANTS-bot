@@ -1,10 +1,12 @@
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-public class Play {
+public class Game {
+	private static Game singleton;
+	
 	private Ants connexion;
 
 	private int lignes = 0;
@@ -20,9 +22,21 @@ public class Play {
 	private Set<Ant> mesFourmis = new HashSet<Ant>();
 	private Set<Ant> ennemiesFourmis = new HashSet<Ant>();
 
-	public Play(Ants ants, Map<Tile, Tile> orders) {
+	private Set<Tile> brouillardTiles;
+	
+	public static Game getSingleton() {
+		if(singleton == null) {
+			singleton = new Game();
+		}
+		return singleton;
+	}
+	
+	public Game() {
+		
+	}
+	
+	public void setConnexion(Ants ants) {
 		this.connexion = ants;
-		this.orders = orders;
 		initialiser();
 	}
 
@@ -49,6 +63,13 @@ public class Play {
 
 	public void play() {
 		orders.clear();
+		
+		for (Iterator<Tile> locIter = brouillardTiles.iterator(); locIter.hasNext();) {
+			Tile next = locIter.next();
+			if (connexion.isVisible(next)) {
+				locIter.remove();
+			}
+		}
 		
 		actionSet(this.mesFourmis, new RechercherNourritureAction());
 		activerSet(this.mesFourmis);
