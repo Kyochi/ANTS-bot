@@ -32,6 +32,8 @@ public class MyBot extends Bot {
 
 	private Set<Tile> enemyHills = new HashSet<Tile>();
 
+	private Play play;
+
 	private boolean doMoveLocation(Tile antLoc, Tile destLoc) {
 		Ants ants = getAnts();
 		// Track targets to prevent 2 ants to the same location
@@ -59,7 +61,12 @@ public class MyBot extends Bot {
 
 	@Override
 	public void doTurn() {
-		Ants ants = getAnts();
+		if(this.play == null) {
+			play = new Play(getAnts(), orders);
+		}
+		this.play.play();
+		
+		/*Ants ants = getAnts();
 		orders.clear();
 		Map<Tile, Tile> foodTargets = new HashMap<Tile, Tile>();
 
@@ -96,6 +103,7 @@ public class MyBot extends Bot {
 				foodRoutes.add(route);
 			}
 		}
+		
 		Collections.sort(foodRoutes);
 		for (Route route : foodRoutes) {
 			if (!foodTargets.containsKey(route.getEnd()) && !foodTargets.containsValue(route.getStart())
@@ -153,6 +161,6 @@ public class MyBot extends Bot {
 					}
 				}
 			}
-		}
+		}*/
 	}
 }
