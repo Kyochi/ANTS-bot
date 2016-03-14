@@ -5,24 +5,24 @@ import java.util.Set;
 
 public class ExplorerAction extends Action {
 
-	public ExplorerAction(List<Ant> fourmis) {
-		super(fourmis);
+	public ExplorerAction(Game game, Set<Ant> fourmis) {
+		super(game, fourmis);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public boolean activer() {
 		for (Ant antLoc : this.fourmis) {
-			if (!Game.getSingleton().getOrders().containsValue(antLoc.getTile())) {
+			if (!game.getOrders().containsValue(antLoc.getTile())) {
 				List<Route> unseenRoutes = new ArrayList<Route>();
-				for (Tile unseenLoc : Game.getSingleton().getBrouillardTiles()) {
-					int distance = Game.getSingleton().getConnexion().getDistance(antLoc.getTile(), unseenLoc);
+				for (Tile unseenLoc : game.getBrouillardTiles()) {
+					int distance = game.getConnexion().getDistance(antLoc.getTile(), unseenLoc);
 					Route route = new Route(antLoc.getTile(), unseenLoc, distance);
 					unseenRoutes.add(route);
 				}
 				Collections.sort(unseenRoutes);
 				for (Route route : unseenRoutes) {
-					if (Game.getSingleton().doMoveLocation(route.getStart(), route.getEnd())) {
+					if (game.doMoveLocation(route.getStart(), route.getEnd())) {
 						break;
 					}
 				}

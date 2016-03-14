@@ -2,12 +2,14 @@ import java.util.Set;
 
 public class Ant implements Comparable<Ant>{
 
+	private Game game;
 	private Tile tile;
 	private Action action;
 	
 	private boolean inFormation = false;
 	
-	public Ant(Tile tile) {
+	public Ant(Game game, Tile tile) {
+		this.game = game;
 		this.tile = tile;
 	}
 
@@ -24,9 +26,9 @@ public class Ant implements Comparable<Ant>{
 	}
 
 	public boolean canKillHill() {
-		Set<Tile> ennemiesFourmillieres = Game.getSingleton().getEnnemiesFourmillieres();
+		Set<Tile> ennemiesFourmillieres = game.getEnnemiesFourmillieres();
 		for (Tile tile : ennemiesFourmillieres) {
-			if(Game.getSingleton().getConnexion().getDistance(this.tile, tile) < 5) {
+			if(game.getConnexion().getDistance(this.tile, tile) < 5) {
 				return true;
 			}
 		}
@@ -45,5 +47,9 @@ public class Ant implements Comparable<Ant>{
 	@Override
 	public int compareTo(Ant o) {
         return hashCode() - o.hashCode();
+	}
+
+	public void setTile(Tile newLoc) {
+		this.tile = newLoc;
 	}
 }

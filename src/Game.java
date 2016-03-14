@@ -6,10 +6,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class Game {
-	private static Game singleton;
-
 	private Ants connexion;
 
 	private int lignes = 0;
@@ -117,19 +116,7 @@ public class Game {
 		return connexion;
 	}
 
-	public static void setSingleton(Game singleton) {
-		Game.singleton = singleton;
-	}
-
-	public static Game getSingleton() {
-		if (singleton == null) {
-			singleton = new Game();
-		}
-		return singleton;
-	}
-
 	public Game() {
-		singleton = this;
 	}
 
 	public void setConnexion(Ants ants) {
@@ -160,13 +147,15 @@ public class Game {
 //	}
 
 	private void defineFourmis() {
+		mesFourmis.clear();
+		ennemiesFourmis.clear();
 		fourmis(mesFourmis, this.connexion.getMyAnts());
 		fourmis(ennemiesFourmis, this.connexion.getEnemyAnts());
 	}
 
 	private void fourmis(Set<Ant> ants, Set<Tile> tiles) {
 		for (Tile tile : tiles) {
-			ants.add(new Ant(tile));
+			ants.add(new Ant(this, tile));
 		}
 	}
 
@@ -195,35 +184,33 @@ public class Game {
 		}
 
 		// Recherche de nourriture
-		List<Ant> fourmiSeekBouffe = new ArrayList<Ant>();
-
-		for (Ant fourmi : getMesFourmis()) {
+		Set<Ant> fourmiSeekBouffe = new HashSet<Ant>();
+		TreeSet<Ant> sortedAnts = new TreeSet<Ant>(getMesFourmis());
+		
+		for (Ant fourmi : sortedAnts) {
 			if (!fourmi.isInFormation() && !fourmi.canKillHill()) {
 				fourmiSeekBouffe.add(fourmi);
 			}
 		}
-		Collections.sort(fourmiSeekBouffe);
-		RechercherNourritureAction rna = new RechercherNourritureAction(fourmiSeekBouffe);
+		RechercherNourritureAction rna = new RechercherNourritureAction(this, fourmiSeekBouffe);
 		rna.activer();
 
-		List<Ant> fourmiAttaquer = new ArrayList<Ant>();
-		for (Ant fourmi : getMesFourmis()) {
+		Set<Ant> fourmiAttaquer = new HashSet<Ant>();
+		for (Ant fourmi : sortedAnts) {
 			if (!orders.containsValue(fourmi.getTile())) {
 				fourmiAttaquer.add(fourmi);
 			}
 		}
-		Collections.sort(fourmiAttaquer);
-		AttaquerAction aa = new AttaquerAction(fourmiAttaquer);
+		AttaquerAction aa = new AttaquerAction(this, fourmiAttaquer);
 		aa.activer();
 
-		List<Ant> fourmiExplorer = new ArrayList<Ant>();
-		for (Ant fourmi : getMesFourmis()) {
+		Set<Ant> fourmiExplorer = new HashSet<Ant>();
+		for (Ant fourmi : sortedAnts) {
 			if (!orders.containsValue(fourmi.getTile())) {
 				fourmiExplorer.add(fourmi);
 			}
 		}
-		Collections.sort(fourmiExplorer);
-		ExplorerAction ea = new ExplorerAction(fourmiExplorer);
+		ExplorerAction ea = new ExplorerAction(this, fourmiExplorer);
 		ea.activer();
 
 	}

@@ -8,17 +8,17 @@ import java.util.TreeSet;
 
 public class RechercherNourritureAction extends Action {
 
-	Map<Tile, Tile> foodTargets = new HashMap<Tile, Tile>();
-	public RechercherNourritureAction(List<Ant> fourmis) {
-		super(fourmis);
+	public RechercherNourritureAction(Game game, Set<Ant> fourmis) {
+		super(game, fourmis);
 	}
 
 	@Override
 	public boolean activer() {
 		// find close food
+		Map<Tile, Tile> foodTargets = new HashMap<Tile, Tile>();
 		List<Route> foodRoutes = new ArrayList<Route>();
-		Ants ants = Game.getSingleton().getConnexion();
-		TreeSet<Tile> sortedFood = new TreeSet<Tile>(Game.getSingleton().getNourritures());
+		Ants ants = game.getConnexion();
+		TreeSet<Tile> sortedFood = new TreeSet<Tile>(game.getNourritures());
 		TreeSet<Ant> sortedAnts = new TreeSet<Ant>(super.fourmis);
 		for (Tile foodLoc : sortedFood) {
 			for (Ant antLoc : sortedAnts) {
@@ -31,7 +31,7 @@ public class RechercherNourritureAction extends Action {
 		Collections.sort(foodRoutes);
 		for (Route route : foodRoutes) {
 			if (!foodTargets.containsKey(route.getEnd()) && !foodTargets.containsValue(route.getStart())
-					&& Game.getSingleton().doMoveLocation(route.getStart(), route.getEnd())) {
+					&& game.doMoveLocation(route.getStart(), route.getEnd())) {
 				foodTargets.put(route.getEnd(), route.getStart());
 			} else {
 				activer = false;
