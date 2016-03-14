@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -132,13 +133,8 @@ public class Game {
 	}
 
 	public void setConnexion(Ants ants) {
-		if (connexion == null) {
-			this.connexion = ants;
-			initialiser();
-		} else {
-			this.connexion = ants;
-			update();
-		}
+		this.connexion = ants;
+		initialiser();
 	}
 
 	private void initialiser() {
@@ -150,28 +146,18 @@ public class Game {
 		ennemiesFourmillieres = this.connexion.getEnemyHills();
 		defineFourmis();
 	}
-	
-	private void update() {
-		tours = this.connexion.getTurnTime();
-		lignes = this.connexion.getRows();
-		colonnes = this.connexion.getCols();
-		nourritures = this.connexion.getFoodTiles();
-		mesFourmillieres = this.connexion.getMyHills();
-		defineFourmis();
-		defineFourmilliere();
-	}
 
-	private void defineFourmilliere() {
-		fourmilliere(ennemiesFourmillieres, this.connexion.getEnemyHills());
-	}
-
-	private void fourmilliere(Set<Tile> fourmilieres, Set<Tile> nouvellesFourmillieres) {
-		for (Tile tile : nouvellesFourmillieres) {
-			if (!fourmilieres.contains(tile)) {
-				ennemiesFourmillieres.add(tile);
-			}
-		}
-	}
+//	private void defineFourmilliere() {
+//		fourmilliere(ennemiesFourmillieres, this.connexion.getEnemyHills());
+//	}
+//
+//	private void fourmilliere(Set<Tile> fourmilieres, Set<Tile> nouvellesFourmillieres) {
+//		for (Tile tile : nouvellesFourmillieres) {
+//			if (!fourmilieres.contains(tile)) {
+//				ennemiesFourmillieres.add(tile);
+//			}
+//		}
+//	}
 
 	private void defineFourmis() {
 		fourmis(mesFourmis, this.connexion.getMyAnts());
@@ -204,37 +190,45 @@ public class Game {
 		}
 
 		// prevent stepping on own hill
-		for (Tile myHill : mesFourmillieres) {
+		for (Tile myHill : getMesFourmillieres()) {
 			orders.put(myHill, null);
 		}
 
 		// Recherche de nourriture
 		List<Ant> fourmiSeekBouffe = new ArrayList<Ant>();
-		List<Ant> fourmiAttaquer = new ArrayList<Ant>();
-		List<Ant> fourmiExplorer = new ArrayList<Ant>();
-		
-		for (Ant fourmi : mesFourmis) {
+
+		for (Ant fourmi : getMesFourmis()) {
 			if (!fourmi.isInFormation() && !fourmi.canKillHill()) {
 				fourmiSeekBouffe.add(fourmi);
 			}
-			if(!orders.containsValue(fourmi.getTile())) {
+		}
+		Collections.sort(fourmiSeekBouffe);
+		RechercherNourritureAction rna = new RechercherNourritureAction(fourmiSeekBouffe);
+		rna.activer();
+
+		List<Ant> fourmiAttaquer = new ArrayList<Ant>();
+		for (Ant fourmi : getMesFourmis()) {
+			if (!orders.containsValue(fourmi.getTile())) {
 				fourmiAttaquer.add(fourmi);
+			}
+		}
+		Collections.sort(fourmiAttaquer);
+		AttaquerAction aa = new AttaquerAction(fourmiAttaquer);
+		aa.activer();
+
+		List<Ant> fourmiExplorer = new ArrayList<Ant>();
+		for (Ant fourmi : getMesFourmis()) {
+			if (!orders.containsValue(fourmi.getTile())) {
 				fourmiExplorer.add(fourmi);
 			}
 		}
-		RechercherNourritureAction rna = new RechercherNourritureAction(fourmiSeekBouffe);
-		rna.activer();
-		
-		AttaquerAction aa = new AttaquerAction(fourmiAttaquer);
-		aa.activer();
-		
+		Collections.sort(fourmiExplorer);
 		ExplorerAction ea = new ExplorerAction(fourmiExplorer);
 		ea.activer();
 
 	}
 
 	public boolean doMoveLocation(Tile antLoc, Tile destLoc) {
-		// Track targets to prevent 2 ants to the same location
 		List<Aim> directions = this.connexion.getDirections(antLoc, destLoc);
 		for (Aim direction : directions) {
 			if (doMoveDirection(antLoc, direction)) {
