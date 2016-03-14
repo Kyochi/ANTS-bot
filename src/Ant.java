@@ -32,4 +32,8 @@ public class Ant {
 		}
 		return false;
 	}
+
+	public Tile getTile() {
+		return this.tile;
+	}
 }
