@@ -26,7 +26,7 @@ public class MyBot extends Bot {
 		new MyBot().readSystemInput();
 	}
 	private Game game;
-	private Map<Tile, Tile> orders = new HashMap<Tile, Tile>();
+//	private Map<Tile, Tile> orders = new HashMap<Tile, Tile>();
 
 //	private boolean doMoveLocation(Tile antLoc, Tile destLoc) {
 //		Ants ants = getAnts();

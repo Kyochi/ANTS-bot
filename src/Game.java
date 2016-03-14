@@ -239,7 +239,6 @@ public class Game {
 	}
 
 	public boolean doMoveDirection(Tile antLoc, Aim direction) {
-		// Track all moves, prevent collisions
 		Tile newLoc = this.connexion.getTile(antLoc, direction);
 		if (this.connexion.getIlk(newLoc).isUnoccupied() && !orders.containsKey(newLoc)) {
 			this.connexion.issueOrder(antLoc, direction);
