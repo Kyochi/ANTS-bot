@@ -49,6 +49,7 @@ public class Play {
 
 	public void play() {
 		orders.clear();
+		
 		actionSet(this.mesFourmis, new RechercherNourritureAction());
 		activerSet(this.mesFourmis);
 	}
