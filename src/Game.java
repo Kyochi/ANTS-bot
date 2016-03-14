@@ -7,13 +7,13 @@ import java.util.Set;
 
 public class Game {
 	private static Game singleton;
-	
+
 	private Ants connexion;
 
 	private int lignes = 0;
 	private int colonnes = 0;
 	private int tours = 0;
-	
+
 	private Map<Tile, Tile> orders = new HashMap<Tile, Tile>();
 	private Set<Tile> nourritures;
 	private Set<Tile> fourmillieres;
@@ -118,20 +118,26 @@ public class Game {
 	public static void setSingleton(Game singleton) {
 		Game.singleton = singleton;
 	}
+
 	public static Game getSingleton() {
-		if(singleton == null) {
+		if (singleton == null) {
 			singleton = new Game();
 		}
 		return singleton;
 	}
-	
+
 	public Game() {
 		singleton = this;
 	}
-	
+
 	public void setConnexion(Ants ants) {
-		this.connexion = ants;
-		initialiser();
+		if (connexion == null) {
+			this.connexion = ants;
+			initialiser();
+		} else {
+			this.connexion = ants;
+			update();
+		}
 	}
 
 	private void initialiser() {
@@ -142,6 +148,28 @@ public class Game {
 		mesFourmillieres = this.connexion.getMyHills();
 		ennemiesFourmillieres = this.connexion.getEnemyHills();
 		defineFourmis();
+	}
+	
+	private void update() {
+		tours = this.connexion.getTurnTime();
+		lignes = this.connexion.getRows();
+		colonnes = this.connexion.getCols();
+		nourritures = this.connexion.getFoodTiles();
+		mesFourmillieres = this.connexion.getMyHills();
+		defineFourmis();
+		defineFourmilliere();
+	}
+
+	private void defineFourmilliere() {
+		fourmilliere(ennemiesFourmillieres, this.connexion.getEnemyHills());
+	}
+
+	private void fourmilliere(Set<Tile> fourmilieres, Set<Tile> nouvellesFourmillieres) {
+		for (Tile tile : nouvellesFourmillieres) {
+			if (!fourmilieres.contains(tile)) {
+				ennemiesFourmillieres.add(tile);
+			}
+		}
 	}
 
 	private void defineFourmis() {
@@ -157,7 +185,7 @@ public class Game {
 
 	public void play() {
 		orders.clear();
-		
+
 		if (brouillardTiles == null) {
 			brouillardTiles = new HashSet<Tile>();
 			for (int row = 0; row < connexion.getRows(); row++) {
@@ -166,23 +194,42 @@ public class Game {
 				}
 			}
 		}
-		
+
 		for (Iterator<Tile> locIter = brouillardTiles.iterator(); locIter.hasNext();) {
 			Tile next = locIter.next();
 			if (connexion.isVisible(next)) {
 				locIter.remove();
 			}
 		}
-		
+
+		// prevent stepping on own hill
+		for (Tile myHill : mesFourmillieres) {
+			orders.put(myHill, null);
+		}
+
+		// Recherche de nourriture
 		Set<Ant> fourmiSeekBouffe = new HashSet<Ant>();
+		Set<Ant> fourmiAttaquer = new HashSet<Ant>();
+		Set<Ant> fourmiExplorer = new HashSet<Ant>();
 		for (Ant fourmi : mesFourmis) {
-			if(!fourmi.isInFormation() && !fourmi.canKillHill()) {
+			if (!fourmi.isInFormation() && !fourmi.canKillHill()) {
 				fourmiSeekBouffe.add(fourmi);
 			}
+			if(!orders.containsValue(fourmi.getTile())) {
+				fourmiAttaquer.add(fourmi);
+				fourmiExplorer.add(fourmi);
+				
+			}
 		}
-		
 		RechercherNourritureAction rna = new RechercherNourritureAction(fourmiSeekBouffe);
 		rna.activer();
+		
+		AttaquerAction aa = new AttaquerAction(fourmiAttaquer);
+		aa.activer();
+		
+		ExplorerAction ea = new ExplorerAction(fourmiExplorer);
+		ea.activer();
+
 	}
 
 	public boolean doMoveLocation(Tile antLoc, Tile destLoc) {
