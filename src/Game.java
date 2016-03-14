@@ -13,7 +13,15 @@ public class Game {
 	private int lignes = 0;
 	private int colonnes = 0;
 	private int tours = 0;
+	
 	private Map<Tile, Tile> orders = new HashMap<Tile, Tile>();
+	private Set<Tile> nourritures;
+	private Set<Tile> fourmillieres;
+	private Set<Tile> mesFourmillieres = new HashSet<Tile>();
+	private Set<Tile> ennemiesFourmillieres = new HashSet<Tile>();
+	private Set<Ant> mesFourmis = new HashSet<Ant>();
+	private Set<Ant> ennemiesFourmis = new HashSet<Ant>();
+	private Set<Tile> brouillardTiles;
 
 	public int getLignes() {
 		return lignes;
@@ -110,16 +118,6 @@ public class Game {
 	public static void setSingleton(Game singleton) {
 		Game.singleton = singleton;
 	}
-	private Set<Tile> nourritures;
-	private Set<Tile> fourmillieres;
-	private Set<Tile> mesFourmillieres = new HashSet<Tile>();
-	private Set<Tile> ennemiesFourmillieres = new HashSet<Tile>();
-
-	private Set<Ant> mesFourmis = new HashSet<Ant>();
-	private Set<Ant> ennemiesFourmis = new HashSet<Ant>();
-
-	private Set<Tile> brouillardTiles;
-	
 	public static Game getSingleton() {
 		if(singleton == null) {
 			singleton = new Game();
@@ -128,7 +126,7 @@ public class Game {
 	}
 	
 	public Game() {
-		
+		singleton = this;
 	}
 	
 	public void setConnexion(Ants ants) {
@@ -159,6 +157,15 @@ public class Game {
 
 	public void play() {
 		orders.clear();
+		
+		if (brouillardTiles == null) {
+			brouillardTiles = new HashSet<Tile>();
+			for (int row = 0; row < connexion.getRows(); row++) {
+				for (int col = 0; col < connexion.getCols(); col++) {
+					brouillardTiles.add(new Tile(row, col));
+				}
+			}
+		}
 		
 		for (Iterator<Tile> locIter = brouillardTiles.iterator(); locIter.hasNext();) {
 			Tile next = locIter.next();

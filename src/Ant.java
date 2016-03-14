@@ -1,6 +1,6 @@
 import java.util.Set;
 
-public class Ant {
+public class Ant implements Comparable<Ant>{
 
 	private Tile tile;
 	private Action action;
@@ -35,5 +35,15 @@ public class Ant {
 
 	public Tile getTile() {
 		return this.tile;
+	}
+	
+	@Override
+    public int hashCode() {
+        return tile.getRow() * Ants.MAX_MAP_SIZE + tile.getCol();
+    }
+
+	@Override
+	public int compareTo(Ant o) {
+        return hashCode() - o.hashCode();
 	}
 }

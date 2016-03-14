@@ -25,11 +25,10 @@ public class MyBot extends Bot {
 	public static void main(String[] args) throws IOException {
 		new MyBot().readSystemInput();
 	}
-
+	private Game game;
 	private Map<Tile, Tile> orders = new HashMap<Tile, Tile>();
 
 	private Set<Tile> unseenTiles;
-
 	private Set<Tile> enemyHills = new HashSet<Tile>();
 
 	private boolean doMoveLocation(Tile antLoc, Tile destLoc) {
@@ -59,7 +58,13 @@ public class MyBot extends Bot {
 
 	@Override
 	public void doTurn() {
-		Ants ants = getAnts();
+		if(this.game == null) {
+			game = new Game();
+		}
+		game.setConnexion(getAnts());
+		this.game.play();
+		
+		/*Ants ants = getAnts();
 		orders.clear();
 		Map<Tile, Tile> foodTargets = new HashMap<Tile, Tile>();
 
@@ -96,6 +101,7 @@ public class MyBot extends Bot {
 				foodRoutes.add(route);
 			}
 		}
+		
 		Collections.sort(foodRoutes);
 		for (Route route : foodRoutes) {
 			if (!foodTargets.containsKey(route.getEnd()) && !foodTargets.containsValue(route.getStart())
@@ -153,6 +159,6 @@ public class MyBot extends Bot {
 					}
 				}
 			}
-		}
+		}/**/
 	}
 }

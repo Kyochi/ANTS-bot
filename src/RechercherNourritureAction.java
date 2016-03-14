@@ -18,7 +18,14 @@ public class RechercherNourritureAction extends Action {
 		// find close food
 		List<Route> foodRoutes = new ArrayList<Route>();
 		Ants ants = Game.getSingleton().getConnexion();
-		TreeSet<Tile> sortedFood = new TreeSet<Tile>(ants.getFoodTiles());
+		if(Game.getSingleton() == null) {
+			throw new RuntimeException("Singleton");
+		}
+		if(Game.getSingleton().getNourritures() == null) {
+			throw new RuntimeException("Nourritures");
+		}
+		
+		TreeSet<Tile> sortedFood = new TreeSet<Tile>(Game.getSingleton().getNourritures());
 		TreeSet<Ant> sortedAnts = new TreeSet<Ant>(super.fourmis);
 		for (Tile foodLoc : sortedFood) {
 			for (Ant antLoc : sortedAnts) {
