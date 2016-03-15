@@ -18,11 +18,6 @@ public class ExplorerAction extends Action {
 				List<Route> unseenRoutes = new ArrayList<Route>();
 				List<Tile> angles = new ArrayList<Tile>();
 				angles.add(new Tile(game.getLignes()/2,game.getColonnes()/2));
-				for (Tile unseenLoc : game.getBrouillardTiles()) {
-					int distance = game.getConnexion().getDistance(antLoc.getTile(), unseenLoc);
-					Route route = new Route(antLoc.getTile(), unseenLoc, distance);
-					unseenRoutes.add(route);
-				}
 				int distanceMax = 0;
 				Tile tileEloigne = new Tile(game.getLignes(), game.getColonnes());
 				for (Tile tile : game.getMesFourmillieres()) {

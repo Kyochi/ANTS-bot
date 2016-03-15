@@ -206,6 +206,16 @@ public class Game {
 			AttaquerAction aa = new AttaquerAction(this, fourmiAttaquer);
 			aa.activer();
 		}
+		
+		Set<Ant> fourmiExplorerEnnemies = new HashSet<Ant>();
+		for (Ant fourmi : sortedAnts) {
+			if (!orders.containsValue(fourmi.getTile())) {
+				fourmiExplorerEnnemies.add(fourmi);
+			}
+			if(fourmiExplorerEnnemies.size() > mesFourmis.size()/10) break;
+		}
+		ExplorerEnnemieAction eea = new ExplorerEnnemieAction(this, fourmiExplorerEnnemies);
+		eea.activer();
 
 		Set<Ant> fourmiExplorer = new HashSet<Ant>();
 		for (Ant fourmi : sortedAnts) {
