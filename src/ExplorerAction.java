@@ -14,12 +14,15 @@ public class ExplorerAction extends Action {
 	public boolean activer() {
 		for (Ant antLoc : this.fourmis) {
 			if (!game.getOrders().containsValue(antLoc.getTile())) {
+							
 				List<Route> unseenRoutes = new ArrayList<Route>();
-<<<<<<< HEAD
 				List<Tile> angles = new ArrayList<Tile>();
-				angles.add(new Tile(0,0));
-				angles.add(new Tile(game.getLignes(), game.getColonnes()));
-				
+				angles.add(new Tile(game.getLignes()/2,game.getColonnes()/2));
+				for (Tile unseenLoc : game.getBrouillardTiles()) {
+					int distance = game.getConnexion().getDistance(antLoc.getTile(), unseenLoc);
+					Route route = new Route(antLoc.getTile(), unseenLoc, distance);
+					unseenRoutes.add(route);
+				}
 				int distanceMax = 0;
 				Tile tileEloigne = new Tile(game.getLignes(), game.getColonnes());
 				for (Tile tile : game.getMesFourmillieres()) {
@@ -30,12 +33,6 @@ public class ExplorerAction extends Action {
 							tileEloigne = angle;
 						}
 					}
-=======
-				for (Tile unseenLoc : game.getBrouillardTiles()) {
-					int distance = game.getConnexion().getDistance(antLoc.getTile(), unseenLoc);
-					Route route = new Route(antLoc.getTile(), unseenLoc, distance);
-					unseenRoutes.add(route);
->>>>>>> 70261d86bb2a3adc1927e9229f55e4a4f81fda97
 				}
 				
 				int distance = game.getConnexion().getDistance(antLoc.getTile(), tileEloigne);

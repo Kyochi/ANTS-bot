@@ -12,10 +12,8 @@ public class AttaquerAction extends Action {
 
 	@Override
 	public boolean activer() {
-<<<<<<< HEAD
 		List<Route> hillRoutes = new ArrayList<Route>();
         for (Tile hillLoc : game.getEnnemiesFourmillieres()) {
-        	System.out.println("des ennemies hills");
             for (Ant ant : super.fourmis) {
                     int distance = game.getConnexion().getDistance(ant.getTile(), hillLoc);
                     Route route = new Route(ant.getTile(), hillLoc, distance);
@@ -27,7 +25,7 @@ public class AttaquerAction extends Action {
         	game.doMoveLocation(route.getStart(), route.getEnd());
         }
 		return true; 
-=======
+		/*
 		List<Route> routes = new ArrayList<Route>();
 		
 		for(Tile hill : game.getEnnemiesFourmillieres()) {
@@ -82,8 +80,7 @@ public class AttaquerAction extends Action {
 			game.doMoveLocation(route.getStart(), route.getEnd());
 			}
 		}
-		return true;
->>>>>>> 70261d86bb2a3adc1927e9229f55e4a4f81fda97
+		return true;*/
 	}
 
 }
