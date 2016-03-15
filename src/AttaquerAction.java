@@ -23,7 +23,7 @@ public class AttaquerAction extends Action {
         for (Route route : hillRoutes) {
         	game.doMoveLocation(route.getStart(), route.getEnd());
         }
-		return true;
+		return true; 
 	}
 
 }

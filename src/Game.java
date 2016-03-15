@@ -173,9 +173,9 @@ public class Game {
 
 		for (Iterator<Tile> locIter = brouillardTiles.iterator(); locIter.hasNext();) {
 			Tile next = locIter.next();
-			if (connexion.isVisible(next)) {
-				locIter.remove();
-			}
+		//	if (connexion.isVisible(next)) {
+			//	locIter.remove();
+			//}
 		}
 
 		// prevent stepping on own hill

@@ -2,9 +2,17 @@
  * Represents a tile of the game map.
  */
 public class Tile implements Comparable<Tile> {
-    private final int row;
+    public void setRow(int row) {
+		this.row = row;
+	}
+
+	public void setCol(int col) {
+		this.col = col;
+	}
+
+	private int row;
     
-    private final int col;
+    private int col;
     
     /**
      * Creates new {@link Tile} object.
