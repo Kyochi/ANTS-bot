@@ -17,15 +17,7 @@ public class ExplorerAction extends Action {
 				List<Route> unseenRoutes = new ArrayList<Route>();
 				for (Tile unseenLoc : game.getBrouillardTiles()) {
 					int distance = game.getConnexion().getDistance(antLoc.getTile(), unseenLoc);
-					/*Tile postTile = new Tile(antLoc.getTile().getRow(),antLoc.getTile().getCol()+1);
-					if(postTile.getCol() > 25){
-						postTile.setCol(postTile.getRow()-2);
-					}*/
-					Ants myAnts = game.getConnexion();
-					Tile hillTile = myAnts.getMyHills().iterator().next();
-					hillTile.setRow(hillTile.getRow()+1);
-					hillTile.setCol(hillTile.getCol()-1);
-					Route route = new Route(antLoc.getTile(), hillTile, distance);
+					Route route = new Route(antLoc.getTile(), unseenLoc, distance);
 					unseenRoutes.add(route);
 				}
 				Collections.sort(unseenRoutes);
