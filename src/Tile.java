@@ -1,3 +1,5 @@
+import java.util.List;
+
 /**
  * Represents a tile of the game map.
  */
@@ -13,6 +15,9 @@ public class Tile implements Comparable<Tile> {
 	private int row;
     
     private int col;
+    
+    private List<Tile> enfants;
+    private Tile parent;
     
     /**
      * Creates new {@link Tile} object.
@@ -79,4 +84,20 @@ public class Tile implements Comparable<Tile> {
     public String toString() {
         return row + " " + col;
     }
+
+	public List<Tile> getEnfants() {
+		return enfants;
+	}
+
+	public void setEnfants(List<Tile> enfants) {
+		this.enfants = enfants;
+	}
+
+	public Tile getParent() {
+		return parent;
+	}
+
+	public void setParent(Tile parent) {
+		this.parent = parent;
+	}
 }

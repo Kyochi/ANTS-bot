@@ -134,17 +134,18 @@ public class Game {
 		defineFourmis();
 	}
 
-//	private void defineFourmilliere() {
-//		fourmilliere(ennemiesFourmillieres, this.connexion.getEnemyHills());
-//	}
-//
-//	private void fourmilliere(Set<Tile> fourmilieres, Set<Tile> nouvellesFourmillieres) {
-//		for (Tile tile : nouvellesFourmillieres) {
-//			if (!fourmilieres.contains(tile)) {
-//				ennemiesFourmillieres.add(tile);
-//			}
-//		}
-//	}
+	// private void defineFourmilliere() {
+	// fourmilliere(ennemiesFourmillieres, this.connexion.getEnemyHills());
+	// }
+	//
+	// private void fourmilliere(Set<Tile> fourmilieres, Set<Tile>
+	// nouvellesFourmillieres) {
+	// for (Tile tile : nouvellesFourmillieres) {
+	// if (!fourmilieres.contains(tile)) {
+	// ennemiesFourmillieres.add(tile);
+	// }
+	// }
+	// }
 
 	private void defineFourmis() {
 		mesFourmis.clear();
@@ -186,7 +187,7 @@ public class Game {
 		// Recherche de nourriture
 		Set<Ant> fourmiSeekBouffe = new HashSet<Ant>();
 		TreeSet<Ant> sortedAnts = new TreeSet<Ant>(getMesFourmis());
-		
+
 		for (Ant fourmi : sortedAnts) {
 			if (!fourmi.isInFormation() && !fourmi.canKillHill()) {
 				fourmiSeekBouffe.add(fourmi);
@@ -213,6 +214,18 @@ public class Game {
 		ExplorerAction ea = new ExplorerAction(this, fourmiExplorer);
 		ea.activer();
 
+		// unblock hills
+		for (Tile myHill : mesFourmillieres) {
+			for (Ant ant : sortedAnts) {
+				if (ant.getTile().equals(myHill) && !orders.containsValue(myHill)) {
+					for (Aim direction : Aim.values()) {
+						if (doMoveDirection(myHill, direction)) {
+							break;
+						}
+					}
+				}
+			}
+		}
 	}
 
 	public boolean doMoveLocation(Tile antLoc, Tile destLoc) {
@@ -234,5 +247,9 @@ public class Game {
 		} else {
 			return false;
 		}
+	}
+
+	public boolean estObstacle(Tile nodeTeste) {
+		return !this.connexion.getIlk(nodeTeste).isPassable();
 	}
 }
