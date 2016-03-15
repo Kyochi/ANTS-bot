@@ -15,22 +15,31 @@ public class ExplorerAction extends Action {
 		for (Ant antLoc : this.fourmis) {
 			if (!game.getOrders().containsValue(antLoc.getTile())) {
 				List<Route> unseenRoutes = new ArrayList<Route>();
-				for (Tile unseenLoc : game.getBrouillardTiles()) {
-					int distance = game.getConnexion().getDistance(antLoc.getTile(), unseenLoc);
-					/*Tile postTile = new Tile(antLoc.getTile().getRow(),antLoc.getTile().getCol()+1);
-					if(postTile.getCol() > 25){
-						postTile.setCol(postTile.getRow()-2);
-					}*/
-					Ants myAnts = game.getConnexion();
-					Tile hillTile = myAnts.getMyHills().iterator().next();
-					hillTile.setRow(hillTile.getRow()+1);
-					hillTile.setCol(hillTile.getCol()-1);
-					Route route = new Route(antLoc.getTile(), hillTile, distance);
-					unseenRoutes.add(route);
+				List<Tile> angles = new ArrayList<Tile>();
+				angles.add(new Tile(0,0));
+				angles.add(new Tile(game.getLignes(), game.getColonnes()));
+				
+				int distanceMax = 0;
+				Tile tileEloigne = new Tile(game.getLignes(), game.getColonnes());
+				for (Tile tile : game.getMesFourmillieres()) {
+					for (Tile angle : angles) {
+						int distance = game.getConnexion().getDistance(tile, angle);
+						if(distance > distanceMax) {
+							distanceMax = distance;
+							tileEloigne = angle;
+						}
+					}
 				}
+				
+				int distance = game.getConnexion().getDistance(antLoc.getTile(), tileEloigne);
+				Route route2 = new Route(antLoc.getTile(), tileEloigne, distance);
+				unseenRoutes.add(route2);
+				
 				Collections.sort(unseenRoutes);
 				for (Route route : unseenRoutes) {
-					if (game.doMoveLocation(route.getStart(), route.getEnd())) {
+					if (!game.getOrders().containsKey(route.getEnd())
+							&& !game.getOrders().containsValue(route.getStart())
+							&& game.doMoveLocation(route.getStart(), route.getEnd())) {
 						break;
 					}
 				}

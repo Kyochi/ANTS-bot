@@ -35,8 +35,8 @@ public class Trajet {
 		List<Aim> aims = connexion.getDirections(debut, fin);
 		for (Aim aim : aims) {
 			Tile sub = connexion.getTile(debut, aim);
-			if(!connexion.getIlk(sub).isPassable()) return false;
-			if(compteur++ > 6) return false;
+			if(!connexion.getIlk(sub).isPassable()) continue;
+			if(compteur++ > 6) return true;
 			if(sub.equals(end)) {
 				tilesTrajet.add(aim);
 				return true;

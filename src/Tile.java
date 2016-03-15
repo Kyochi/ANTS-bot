@@ -4,17 +4,9 @@ import java.util.List;
  * Represents a tile of the game map.
  */
 public class Tile implements Comparable<Tile> {
-    public void setRow(int row) {
-		this.row = row;
-	}
-
-	public void setCol(int col) {
-		this.col = col;
-	}
-
-	private int row;
+    private final int row;
     
-    private int col;
+    private final int col;
     
     private List<Tile> enfants;
     private Tile parent;

@@ -77,7 +77,6 @@ public class Ant implements Comparable<Ant> {
 				}
 			}
 		}
-		System.out.println("NB - " + nb);
 		return nb;
 	}
 }

@@ -174,9 +174,9 @@ public class Game {
 
 		for (Iterator<Tile> locIter = brouillardTiles.iterator(); locIter.hasNext();) {
 			Tile next = locIter.next();
-		//	if (connexion.isVisible(next)) {
-			//	locIter.remove();
-			//}
+			if (connexion.isVisible(next)) {
+				locIter.remove();
+			}
 		}
 
 		// prevent stepping on own hill
@@ -196,14 +196,16 @@ public class Game {
 		RechercherNourritureAction rna = new RechercherNourritureAction(this, fourmiSeekBouffe);
 		rna.activer();
 
-		Set<Ant> fourmiAttaquer = new HashSet<Ant>();
-		for (Ant fourmi : sortedAnts) {
-			if (!orders.containsValue(fourmi.getTile())) {
-				fourmiAttaquer.add(fourmi);
+		if(ennemiesFourmillieres.size() > 0) {
+			Set<Ant> fourmiAttaquer = new HashSet<Ant>();
+			for (Ant fourmi : sortedAnts) {
+				if (!orders.containsValue(fourmi.getTile())) {
+					fourmiAttaquer.add(fourmi);
+				}
 			}
+			AttaquerAction aa = new AttaquerAction(this, fourmiAttaquer);
+			aa.activer();
 		}
-		AttaquerAction aa = new AttaquerAction(this, fourmiAttaquer);
-		aa.activer();
 
 		Set<Ant> fourmiExplorer = new HashSet<Ant>();
 		for (Ant fourmi : sortedAnts) {
@@ -229,7 +231,9 @@ public class Game {
 	}
 
 	public boolean doMoveLocation(Tile antLoc, Tile destLoc) {
-		List<Aim> directions = this.connexion.getDirections(antLoc, destLoc);
+//		List<Aim> directions = this.connexion.getDirections(antLoc, destLoc);
+		Trajet trajet = new Trajet(antLoc, destLoc, connexion);
+		List<Aim> directions = trajet.calculer();
 		for (Aim direction : directions) {
 			if (doMoveDirection(antLoc, direction)) {
 				return true;
@@ -247,9 +251,5 @@ public class Game {
 		} else {
 			return false;
 		}
-	}
-
-	public boolean estObstacle(Tile nodeTeste) {
-		return !this.connexion.getIlk(nodeTeste).isPassable();
 	}
 }
