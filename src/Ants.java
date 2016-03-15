@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 
 /**
@@ -319,6 +320,59 @@ public class Ants {
         return visible[tile.getRow()][tile.getCol()];
     }
 
+    /*
+     * Transformation de la map en Graph orienté 
+     */
+    public List<Tile> mapToGraphOriented(Game game, Tile myPosition, Tile objectif) {
+    	List<Aim> directionReframe = this.getDirections(myPosition, objectif);
+    	int rowMin;
+    	int colMin;
+    	int rowMax;
+    	int colMax;
+    	
+    	if (directionReframe.contains(Aim.NORTH) && directionReframe.contains(Aim.EAST)) {
+    		colMin = myPosition.getCol();
+    		rowMin = myPosition.getRow();
+    	}
+    	else if (directionReframe.contains(Aim.NORTH) && directionReframe.contains(Aim.WEST)) {
+    		colMax = myPosition.getCol();
+    		rowMax = myPosition.getRow();
+    	}
+    	else if (directionReframe.contains(Aim.SOUTH) && directionReframe.contains(Aim.EAST)) {
+    		
+    	}
+    	else if (directionReframe.contains(Aim.SOUTH) && directionReframe.contains(Aim.WEST)) {
+    		
+    	}
+    	else if (directionReframe.contains(Aim.SOUTH)) {
+    		
+    	}
+    	else if (directionReframe.contains(Aim.NORTH)) {
+    		
+    	}
+    	else if (directionReframe.contains(Aim.EAST)) {
+    		
+    	}
+    	else if (directionReframe.contains(Aim.WEST)) {
+    		
+    	}
+    	
+    	
+    	
+    	return null;
+    }
+    
+    /*
+     * Recherche les chemins les plus court dans une matrice.
+     */
+    public List<Queue> rechercheChemins(Tile start) {
+    	
+    	
+    	
+    	return null;
+    }
+    
+    
     /**
      * Calculates distance between two locations on the game map.
      * 
